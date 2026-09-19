@@ -1,30 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProjectController;
 
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/about', fn() => view('about'))->name('about');
 Route::get('/education', fn() => view('education'))->name('education');
 
-Route::get('/projects', function () {
-    $projects = [
-        [
-            'judul' => 'Sistem Pengelolaan Buku (reCRUD)',
-            'kategori' => 'Tugas Praktikum',
-            'deskripsi' => 'Aplikasi CRUD buku sederhana menggunakan PHP native dan MySQL dari praktikum pertemuan 3.',
-            'teknologi' => ['PHP', 'MySQL'],
-            'tautan' => 'https://github.com/9iven'
-        ],
-        [
-            'judul' => 'Website Portofolio',
-            'kategori' => 'Tugas Praktikum',
-            'deskripsi' => 'Website portofolio halaman statis menggunakan Laravel, routing, dan Blade templating pertemuan 4.',
-            'teknologi' => ['Laravel', 'Blade', 'Tailwind CSS'],
-            'tautan' => 'https://github.com/9iven/Laravel-Web-Portofolio'
-        ]
-    ];
-    return view('projects', compact('projects'));
-})->name('projects');
+// Resource Routes for Posts (Modul Tutorial) and Projects (Tugas Portofolio)
+Route::resource('posts', PostController::class);
+Route::resource('projects', ProjectController::class);
 
 Route::prefix('demo')->group(function () {
     Route::get('/halo-dunia', function () {

@@ -11,7 +11,7 @@
     </p>
     <div class="flex gap-2">
         <a href="{{ route('about') }}" class="bg-blue-600 text-white px-3 py-1.5 rounded text-sm">Tentang Saya</a>
-        <a href="{{ route('projects') }}" class="border px-3 py-1.5 rounded text-sm text-gray-700">Lihat Proyek</a>
+        <a href="{{ route('projects.index') }}" class="border px-3 py-1.5 rounded text-sm text-gray-700">Lihat Proyek</a>
     </div>
 </div>
 @endsection
