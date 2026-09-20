@@ -8,7 +8,7 @@ Route::get('/', fn() => view('home'))->name('home');
 Route::get('/about', fn() => view('about'))->name('about');
 Route::get('/education', fn() => view('education'))->name('education');
 
-// Resource Routes for Posts (Modul Tutorial) and Projects (Tugas Portofolio)
+// Routes buat Posts (Modul Tutorial) dan Projects (Tugas Portofolio)
 Route::resource('posts', PostController::class);
 Route::resource('projects', ProjectController::class);
 
