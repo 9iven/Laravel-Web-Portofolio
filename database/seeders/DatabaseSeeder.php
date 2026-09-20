@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
     {
         // Seed Dummy Posts (Tutorial Modul)
         Post::create([
-            'title' => 'Memulai Pengembangan dengan Laravel 12',
-            'description' => 'Panduan pengenalan alur Model-View-Controller (MVC), integrasi routing, controller resource, dan Eloquent ORM di Laravel.',
+            'title' => 'Memulai Pengembangan dengan Laravel 13',
+            'description' => 'Panduan pengenalan alur Model-View-Controller (MVC), integrasi routing, controller resource, dan Eloquent ORM di Laravel 13.',
         ]);
 
         Post::create([
