@@ -48,7 +48,7 @@
         </label>
         <input type="text" name="teknologi" id="teknologi" 
             value="{{ old('teknologi', $project->teknologi ?? '') }}" required
-            placeholder="Contoh: Laravel, Blade, Tailwind CSS, SQLite"
+            placeholder="Contoh: Laravel, Blade, Tailwind CSS, MySQL"
             class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500">
         @error('teknologi')
             <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
