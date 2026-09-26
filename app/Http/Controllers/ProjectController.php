@@ -30,15 +30,15 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'judul' => 'required|max:200',
+        $validatedData = $request->validate([
+            'judul' => 'required|min:5|max:200',
             'kategori' => 'required|max:100',
-            'deskripsi' => 'required',
+            'deskripsi' => 'required|min:10',
             'teknologi' => 'required|max:255',
             'tautan' => 'nullable|url|max:255',
         ]);
 
-        Project::create($request->only(['judul', 'kategori', 'deskripsi', 'teknologi', 'tautan']));
+        Project::create($validatedData);
 
         return redirect()->route('projects.index')->with('success', 'Proyek berhasil ditambahkan!');
     }
@@ -68,16 +68,16 @@ class ProjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'judul' => 'required|max:200',
+        $validatedData = $request->validate([
+            'judul' => 'required|min:5|max:200',
             'kategori' => 'required|max:100',
-            'deskripsi' => 'required',
+            'deskripsi' => 'required|min:10',
             'teknologi' => 'required|max:255',
             'tautan' => 'nullable|url|max:255',
         ]);
 
         $project = Project::findOrFail($id);
-        $project->update($request->only(['judul', 'kategori', 'deskripsi', 'teknologi', 'tautan']));
+        $project->update($validatedData);
 
         return redirect()->route('projects.index')->with('success', 'Proyek berhasil diperbarui!');
     }

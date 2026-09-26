@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
 use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,18 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed Dummy Posts (Tutorial Modul)
-        Post::create([
-            'title' => 'Memulai Pengembangan dengan Laravel 13',
-            'description' => 'Panduan pengenalan alur Model-View-Controller (MVC), integrasi routing, controller resource, dan Eloquent ORM di Laravel 13.',
-        ]);
-
-        Post::create([
-            'title' => 'Implementasi Mass Assignment dan Validasi Form',
-            'description' => 'Membahas pengamanan properti $fillable pada model Eloquent dan validasi input formulir menggunakan method $request->validate().',
-        ]);
-
-        // Seed Dummy Projects (Tugas Portofolio)
         Project::create([
             'judul' => 'Sistem Pengelolaan Buku (reCRUD)',
             'kategori' => 'Tugas Praktikum',
