@@ -32,7 +32,7 @@
     <h2 class="font-bold text-base mb-2">Keahlian:</h2>
     <ul class="list-disc ml-6 text-sm text-gray-700 space-y-1">
         <li>PHP &amp; Laravel</li>
-        <li>MySQL Database</li>
+        <li>SQLite Database</li>
         <li>HTML, CSS, JavaScript</li>
         <li>Git</li>
     </ul>
