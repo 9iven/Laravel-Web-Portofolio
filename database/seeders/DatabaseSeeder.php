@@ -38,7 +38,5 @@ class DatabaseSeeder extends Seeder
             'teknologi' => 'Laravel, REST API, Tailwind CSS',
             'tautan' => 'https://github.com/9iven',
         ]);
-
-        $this->call(PostSeeder::class);
     }
 }
