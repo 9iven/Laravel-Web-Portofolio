@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -10,17 +12,29 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): View
     {
-        $posts = Post::latest()->paginate(10);
+        $perPage = in_array((int) $request->input('per_page'), [5, 10, 25], true)
+            ? (int) $request->input('per_page')
+            : 10;
 
-        return view('posts.index', compact('posts'));
+        $query = Post::query();
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%'.$request->input('search').'%');
+        }
+
+        $posts = $query->orderBy('created_at', 'desc')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return view('posts.index', compact('posts', 'perPage'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('posts.create');
     }
@@ -28,13 +42,17 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
-            'title' => 'required|min:5|max:200',
-            'description' => 'required|min:10',
-            'status' => 'required|in:draft,published',
+            'title' => 'required|string|min:5|max:200',
+            'description' => 'required|string|min:10',
+            'status' => 'nullable|in:draft,published',
         ]);
+
+        if (empty($validatedData['status'])) {
+            $validatedData['status'] = 'draft';
+        }
 
         Post::create($validatedData);
 
@@ -44,7 +62,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): View
     {
         $post = Post::findOrFail($id);
 
@@ -54,7 +72,7 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
         $post = Post::findOrFail($id);
 
@@ -64,15 +82,20 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $validatedData = $request->validate([
-            'title' => 'required|min:5|max:200',
-            'description' => 'required|min:10',
-            'status' => 'required|in:draft,published',
+            'title' => 'required|string|min:5|max:200',
+            'description' => 'required|string|min:10',
+            'status' => 'nullable|in:draft,published',
         ]);
 
         $post = Post::findOrFail($id);
+
+        if (empty($validatedData['status'])) {
+            $validatedData['status'] = $post->status ?? 'draft';
+        }
+
         $post->update($validatedData);
 
         return redirect()->route('posts.index')->with('success', 'Post berhasil diperbarui!');
@@ -81,43 +104,11 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $post = Post::findOrFail($id);
         $post->delete();
 
         return redirect()->route('posts.index')->with('success', 'Post berhasil dihapus!');
-    }
-
-    /**
-     * Display the soft deleted resource.
-     */
-    public function trash()
-    {
-        $posts = Post::onlyTrashed()->get();
-
-        return view('posts.trash', compact('posts'));
-    }
-
-    /**
-     * Restore the specified soft deleted resource.
-     */
-    public function restore(string $id)
-    {
-        $post = Post::withTrashed()->findOrFail($id);
-        $post->restore();
-
-        return redirect()->route('posts.index')->with('success', 'Post berhasil dikembalikan dari sampah!');
-    }
-
-    /**
-     * Permanently remove the specified soft deleted resource.
-     */
-    public function forceDestroy(string $id)
-    {
-        $post = Post::withTrashed()->findOrFail($id);
-        $post->forceDelete();
-
-        return redirect()->route('posts.trash')->with('success', 'Post dihapus permanen!');
     }
 }
