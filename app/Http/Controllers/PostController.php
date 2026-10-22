@@ -47,12 +47,7 @@ class PostController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|min:5|max:200',
             'description' => 'required|string|min:10',
-            'status' => 'nullable|in:draft,published',
         ]);
-
-        if (empty($validatedData['status'])) {
-            $validatedData['status'] = 'draft';
-        }
 
         Post::create($validatedData);
 
@@ -87,15 +82,9 @@ class PostController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|min:5|max:200',
             'description' => 'required|string|min:10',
-            'status' => 'nullable|in:draft,published',
         ]);
 
         $post = Post::findOrFail($id);
-
-        if (empty($validatedData['status'])) {
-            $validatedData['status'] = $post->status ?? 'draft';
-        }
-
         $post->update($validatedData);
 
         return redirect()->route('posts.index')->with('success', 'Post berhasil diperbarui!');

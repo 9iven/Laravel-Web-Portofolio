@@ -16,7 +16,6 @@ class PostTableSeeder extends Seeder
             Post::create([
                 'title' => 'Post Judul Ke-'.$i,
                 'description' => 'Deskripsi untuk post judul ke-'.$i,
-                'status' => 'published',
             ]);
         }
     }
