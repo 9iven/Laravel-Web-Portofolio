@@ -10,11 +10,13 @@ class EnsureAdmin
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->user()?->email !== 'admin@example.com') {
+            abort(403, 'Akses ditolak.');
+        }
+
         return $next($request);
     }
 }
