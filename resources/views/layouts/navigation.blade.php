@@ -62,7 +62,9 @@
                 @else
                     <div class="flex gap-4 text-sm font-medium">
                         <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">Log in</a>
-                        <a href="{{ route('register') }}" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700">Register</a>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700">Register</a>
+                        @endif
                     </div>
                 @endauth
             </div>

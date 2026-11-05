@@ -13,8 +13,9 @@ Route::get('/education', fn () => view('education'))->name('education');
 // 2. Route Dashboard & Profil (Wajib Login)
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
-    
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/post/profile-saya', [ProfileController::class, 'edit'])->name('profile.saya');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
@@ -24,7 +25,11 @@ Route::middleware(['auth'])->group(function () {
 
 // 3. Route Khusus Admin (Wajib Login + Email admin@example.com)
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::resource('projects', ProjectController::class);
+    Route::prefix('post')->group(function () {
+        Route::resource('projects', ProjectController::class);
+    });
+    // Alias /projects agar rute lama tetap terhubung ke /post/projects
+    Route::get('/projects', fn () => redirect()->route('projects.index'));
 });
 
 require __DIR__.'/auth.php';

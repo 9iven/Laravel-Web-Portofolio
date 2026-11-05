@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>@yield('title', 'Portofolio Website Given')</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,26 +14,26 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+    <body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col justify-between">
+        <div>
+            @include('partials.navbar')
 
-            <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-gray-50 border-b">
+                    <div class="container mx-auto p-4 max-w-2xl">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
 
-            <!-- Page Content -->
-            <main class="py-6">
+            <main class="container mx-auto p-4 max-w-2xl">
+                @include('partials._flash')
                 {{ $slot ?? '' }}
                 @yield('content')
             </main>
         </div>
-        
+
         @include('partials.footer')
+        @stack('scripts')
     </body>
 </html>
