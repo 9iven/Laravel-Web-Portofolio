@@ -34,7 +34,7 @@
     </div>
 
     <!-- Kelola Galeri Foto Proyek (Pertemuan 10) -->
-    <div class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm space-y-6">
+    <div id="gallery-section" class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm space-y-6">
         <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 pb-3">
             <div>
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white">Galeri Foto Proyek</h2>
