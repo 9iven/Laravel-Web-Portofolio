@@ -13,20 +13,29 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Theme Initialization Script (Zero-FOUC) -->
+        <script>
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
     </head>
-    <body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col justify-between">
+    <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans min-h-screen flex flex-col justify-between transition-colors duration-200">
         <div>
             @include('partials.navbar')
 
             @isset($header)
-                <header class="bg-gray-50 border-b">
-                    <div class="container mx-auto p-4 max-w-2xl">
+                <header class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                    <div class="container mx-auto px-4 py-4 max-w-5xl">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
 
-            <main class="container mx-auto p-4 max-w-2xl">
+            <main class="container mx-auto px-4 py-6 max-w-5xl">
                 @include('partials._flash')
                 {{ $slot ?? '' }}
                 @yield('content')

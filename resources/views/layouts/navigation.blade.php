@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false, isDark: document.documentElement.classList.contains('dark') }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 transition-colors duration-200">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -21,7 +21,7 @@
                     <x-nav-link :href="route('education')" :active="request()->routeIs('education')">
                         {{ __('Education') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
+                    <x-nav-link :href="route('projects')" :active="request()->routeIs('projects*')">
                         {{ __('Projects') }}
                     </x-nav-link>
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.*')">
@@ -36,7 +36,30 @@
             </div>
 
             <!-- User Menu / Login di Ujung Kanan -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center sm:ms-6 sm:gap-2">
+                <!-- Theme Toggle Button -->
+                <button type="button"
+                    @click="
+                        isDark = !isDark;
+                        if (isDark) {
+                            document.documentElement.classList.add('dark');
+                            localStorage.setItem('theme', 'dark');
+                        } else {
+                            document.documentElement.classList.remove('dark');
+                            localStorage.setItem('theme', 'light');
+                        }
+                    "
+                    class="p-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer inline-flex items-center justify-center"
+                    :title="isDark ? 'Ganti ke Mode Terang (Light Mode)' : 'Ganti ke Mode Gelap (Dark Mode)'"
+                    aria-label="Toggle dark mode">
+                    <svg x-show="isDark" class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20" style="display: none;">
+                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <svg x-show="!isDark" class="w-4 h-4 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                </button>
+
                 @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -70,7 +93,9 @@
                 @else
                     <div class="flex gap-4 text-sm font-medium">
                         <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">Log in</a>
-                        <a href="{{ route('register') }}" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700">Register</a>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700">Register</a>
+                        @endif
                     </div>
                 @endauth
             </div>
@@ -99,7 +124,7 @@
             <x-responsive-nav-link :href="route('education')" :active="request()->routeIs('education')">
                 {{ __('Education') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
+            <x-responsive-nav-link :href="route('projects')" :active="request()->routeIs('projects*')">
                 {{ __('Projects') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.*')">
@@ -139,9 +164,11 @@
                 <x-responsive-nav-link :href="route('login')">
                     {{ __('Log in') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('register')">
-                    {{ __('Register') }}
-                </x-responsive-nav-link>
+                @if (Route::has('register'))
+                    <x-responsive-nav-link :href="route('register')">
+                        {{ __('Register') }}
+                    </x-responsive-nav-link>
+                @endif
             </div>
         @endauth
     </div>

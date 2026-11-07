@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('level')->default(80);
             $table->timestamps();
         });
     }

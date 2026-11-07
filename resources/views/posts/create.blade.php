@@ -10,9 +10,9 @@
         </a>
     </div>
 
-    <div class="border border-gray-200 bg-white p-6 rounded-xl shadow-sm">
-        <h1 class="text-xl font-bold text-gray-900 mb-1">Tambah Post Baru</h1>
-        <p class="text-xs text-gray-500 mb-6">Lengkapi informasi post untuk disimpan ke dalam database.</p>
+    <div class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+        <h1 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Tambah Post Baru</h1>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">Lengkapi informasi post untuk disimpan ke dalam database.</p>
 
         <form action="{{ route('posts.store') }}" method="POST">
             @csrf

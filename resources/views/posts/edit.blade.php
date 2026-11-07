@@ -10,9 +10,9 @@
         </a>
     </div>
 
-    <div class="border border-gray-200 bg-white p-6 rounded-xl shadow-sm">
-        <h1 class="text-xl font-bold text-gray-900 mb-1">Edit Post</h1>
-        <p class="text-xs text-gray-500 mb-6">Perbarui rincian post di database.</p>
+    <div class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+        <h1 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Edit Post</h1>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-6">Perbarui rincian post di database.</p>
 
         <form action="{{ route('posts.update', $post->id) }}" method="POST">
             @csrf
