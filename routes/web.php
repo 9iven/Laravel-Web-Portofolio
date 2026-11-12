@@ -14,10 +14,10 @@ Route::get('/', fn () => view('home'))->name('home');
 Route::get('/about', fn () => view('about'))->name('about');
 Route::get('/education', fn () => view('education'))->name('education');
 
-// Rute Publik Project (Pertemuan 10)
+// Rute Publik Project (Pertemuan 10 & 11)
 Route::get('/projects', [PortfolioController::class, 'projects'])->name('projects');
 Route::get('/projects/daftar', fn () => redirect()->route('projects'))->name('projects.index');
-Route::get('/projects/{project}', [PortfolioController::class, 'show'])->name('projects.show');
+Route::get('/projects/{project:slug}', [PortfolioController::class, 'show'])->name('projects.show');
 
 // 2. Rute Dashboard & Profil Pengguna (Wajib Login)
 Route::middleware('auth')->group(function () {
