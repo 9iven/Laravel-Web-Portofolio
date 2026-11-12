@@ -26,15 +26,12 @@
     <div class="bg-gray-50 dark:bg-gray-800/80 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm space-y-3">
         <form method="GET" action="{{ Request::routeIs('post.projects.*') ? route('post.projects.index') : route('projects') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             <!-- 1. Input Pencarian -->
-            <div class="lg:col-span-2 relative">
+            <div class="lg:col-span-2">
                 <input type="text"
                        name="search"
                        value="{{ request('search') }}"
                        placeholder="Cari judul, ringkasan, atau deskripsi..."
-                       class="w-full text-xs rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 pl-3 pr-8 py-2">
-                @if(request('search'))
-                    <span class="absolute right-2.5 top-2 text-xs text-gray-400">&times;</span>
-                @endif
+                       class="w-full text-xs rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 px-3 py-2">
             </div>
 
             <!-- 2. Filter Kategori -->
@@ -98,24 +95,16 @@
         </form>
 
         <!-- Informasi Jumlah Hasil (Latihan) -->
-        <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700/60">
-            <div>
-                Ditemukan <strong class="text-gray-900 dark:text-white">{{ $projects->total() }}</strong> proyek
-                @if(request('search'))
-                    untuk kata kunci &ldquo;<span class="text-blue-600 dark:text-blue-400">{{ request('search') }}</span>&rdquo;
-                @endif
-                @if(request('category'))
-                    pada kategori &ldquo;{{ $categories->firstWhere('slug', request('category'))?->name ?? request('category') }}&rdquo;
-                @endif
-                @if(request('technology'))
-                    dengan teknologi &ldquo;{{ $technologies->firstWhere('slug', request('technology'))?->name ?? request('technology') }}&rdquo;
-                @endif
-            </div>
-            @if(request()->hasAny(['search', 'category', 'technology', 'sort', 'status']))
-                <a href="{{ Request::routeIs('post.projects.*') ? route('post.projects.index') : route('projects') }}"
-                   class="text-blue-600 dark:text-blue-400 hover:underline">
-                    &times; Bersihkan semua filter
-                </a>
+        <div class="text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700/60">
+            Ditemukan <strong class="text-gray-900 dark:text-white">{{ $projects->total() }}</strong> proyek
+            @if(request('search'))
+                untuk kata kunci &ldquo;<span class="text-blue-600 dark:text-blue-400">{{ request('search') }}</span>&rdquo;
+            @endif
+            @if(request('category'))
+                pada kategori &ldquo;{{ $categories->firstWhere('slug', request('category'))?->name ?? request('category') }}&rdquo;
+            @endif
+            @if(request('technology'))
+                dengan teknologi &ldquo;{{ $technologies->firstWhere('slug', request('technology'))?->name ?? request('technology') }}&rdquo;
             @endif
         </div>
     </div>
