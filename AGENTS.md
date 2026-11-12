@@ -24,6 +24,8 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Check for existing components to reuse before writing a new one.
 - **No Pest Testing by Default**: Do not write or execute Pest automated tests unless explicitly requested by the user. Rely on direct manual, runtime, and browser verification.
 - **Always Update Footer**: Always update `resources/views/partials/footer.blade.php` to reflect the active practical session/pertemuan number.
+- **Keep Codebase Free of Non-Code Docs**: Never place non-code documents (presentation guides, assignment reports, meeting summaries, external .docx / .pdf / .md notes) inside `portofolio-website`. Store them in the corresponding practical session directory (e.g., `ppwl11/`, `ppwl12/`). Keep `portofolio-website` strictly for application code.
+- **Manual Terminal Screenshots with Step-by-Step Guidance**: Never generate synthetic or mock terminal images using scripts for practical reports. The student will capture actual terminal screenshots manually. Always provide the student with clear, exact CLI commands to run, what specific output to capture, and the target image filenames in `pics/`.
 
 ## Verification Scripts
 
