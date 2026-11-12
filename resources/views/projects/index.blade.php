@@ -10,7 +10,7 @@
                 {{ Request::routeIs('post.projects.*') ? 'Kelola Proyek (Admin)' : 'Daftar Proyek' }}
             </h1>
             <p class="text-xs text-gray-500 dark:text-gray-400">
-                Pencarian, filter kategori & teknologi, serta pengurutan data portofolio.
+                Pencarian, filter kategori &amp; teknologi, serta pengurutan data portofolio.
             </p>
         </div>
         <div class="flex items-center gap-2">
@@ -66,7 +66,7 @@
                 <select name="sort" class="w-full text-xs rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500 py-2">
                     <option value="">Urutkan: Tanggal Terbaru</option>
                     <option value="terlama" @selected(request('sort') === 'terlama')>Tanggal Terlama</option>
-                    <option value="project_date" @selected(request('sort') === 'project_date')>Berdasarkan Project Date</option>
+                    <option value="project_date" @selected(request('sort') === 'project_date')>Berdasarkan Tanggal Proyek</option>
                     <option value="az" @selected(request('sort') === 'az')>Nama (A &rarr; Z)</option>
                     <option value="za" @selected(request('sort') === 'za')>Nama (Z &rarr; A)</option>
                 </select>
@@ -127,7 +127,7 @@
                 <div>
                     <!-- Thumbnail -->
                     @if($project->thumbnail_url)
-                        <img src="{{ $project->thumbnail_url }}" alt="{{ $project->name }}"
+                        <img src="{{ $project->thumbnail_url }}" alt="{{ $project->judul }}"
                              class="w-full h-44 object-cover border-b border-gray-100 dark:border-gray-700">
                     @else
                         <div class="w-full h-32 bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400 text-xs">
@@ -139,7 +139,7 @@
                         <div class="flex justify-between items-start gap-2">
                             <h2 class="font-bold text-base text-gray-900 dark:text-white leading-snug">
                                 <a href="{{ route('projects.show', $project) }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                    {{ $project->name }}
+                                    {{ $project->judul }}
                                 </a>
                             </h2>
                             <div class="flex flex-col items-end gap-1 shrink-0">
@@ -154,7 +154,7 @@
 
                         <!-- Ringkasan Proyek / Short Description -->
                         <p class="text-xs text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed">
-                            {{ $project->short_description ?: $project->description ?: $project->deskripsi }}
+                            {{ $project->short_description ?: Str::limit($project->deskripsi, 120) }}
                         </p>
 
                         <!-- Daftar Badge Teknologi (Pivot project_technology) -->
@@ -166,7 +166,7 @@
                                         {{ $tech->name }}
                                     </span>
                                 @empty
-                                    <span class="text-[10px] text-gray-400 font-mono">{{ $project->teknologi }}</span>
+                                    <span class="text-[10px] text-gray-400 font-mono">{{ $project->teknologi ?? '-' }}</span>
                                 @endforelse
                             </div>
                         </div>

@@ -14,15 +14,13 @@ use Illuminate\View\View;
 class ProjectController extends Controller
 {
     /**
-     * Display a listing of the resource with search and status filtering (Latihan).
+     * Menampilkan daftar proyek untuk admin (dengan fitur pencarian dan filter status).
      */
     public function index(Request $request): View
     {
         $query = Project::with(['category', 'technologies', 'images'])
-            ->when($request->search, fn ($q, $s) => $q->where(fn ($w) => $w->where('name', 'like', "%{$s}%")
-                ->orWhere('judul', 'like', "%{$s}%")
+            ->when($request->search, fn ($q, $s) => $q->where(fn ($w) => $w->where('judul', 'like', "%{$s}%")
                 ->orWhere('short_description', 'like', "%{$s}%")
-                ->orWhere('description', 'like', "%{$s}%")
                 ->orWhere('deskripsi', 'like', "%{$s}%")))
             ->when($request->filled('status'), fn ($q) => $q->where('status', $request->query('status')))
             ->when($request->category, fn ($q, $c) => $q->whereHas('category', fn ($w) => $w->where('slug', $c)))
@@ -33,10 +31,10 @@ class ProjectController extends Controller
                 $query->oldest('project_date')->oldest('id');
                 break;
             case 'az':
-                $query->orderBy('name', 'asc');
+                $query->orderBy('judul', 'asc');
                 break;
             case 'za':
-                $query->orderBy('name', 'desc');
+                $query->orderBy('judul', 'desc');
                 break;
             case 'project_date':
                 $query->orderByDesc('project_date')->latest('id');
@@ -53,7 +51,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form tambah proyek baru.
      */
     public function create(): View
     {
@@ -64,42 +62,19 @@ class ProjectController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data proyek baru ke database.
      */
     public function store(Request $request): RedirectResponse
     {
-        if ($request->filled('name') && ! $request->filled('judul')) {
-            $request->merge(['judul' => $request->name]);
-        } elseif ($request->filled('judul') && ! $request->filled('name')) {
-            $request->merge(['name' => $request->judul]);
-        }
-
-        if ($request->filled('description') && ! $request->filled('deskripsi')) {
-            $request->merge(['deskripsi' => $request->description]);
-        } elseif ($request->filled('deskripsi') && ! $request->filled('description')) {
-            $request->merge(['description' => $request->deskripsi]);
-        }
-
-        if ($request->filled('project_url') && ! $request->filled('tautan')) {
-            $request->merge(['tautan' => $request->project_url]);
-        } elseif ($request->filled('tautan') && ! $request->filled('project_url')) {
-            $request->merge(['project_url' => $request->tautan]);
-        }
-
         $validatedData = $request->validate([
-            'name' => 'required|max:255|unique:projects,name',
-            'judul' => 'nullable|max:255',
+            'judul' => 'required|max:255|unique:projects,judul',
             'category_id' => 'required|exists:categories,id',
-            'kategori' => 'nullable|string|max:100',
             'short_description' => 'nullable|max:255',
-            'description' => 'nullable|string',
-            'deskripsi' => 'nullable|string',
-            'teknologi' => 'nullable|string|max:255',
+            'deskripsi' => 'required|string',
             'project_date' => 'nullable|date',
             'is_featured' => 'nullable|boolean',
-            'project_url' => 'nullable|url|max:255',
-            'repository_url' => 'nullable|url|max:255',
             'tautan' => 'nullable|url|max:255',
+            'repository_url' => 'nullable|url|max:255',
             'status' => 'required|in:draft,published',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048|dimensions:min_width=400,min_height=300',
             'technologies' => 'nullable|array',
@@ -109,26 +84,25 @@ class ProjectController extends Controller
             'thumbnail.max' => 'Ukuran file thumbnail maksimal 2 MB.',
         ]);
 
-        $nameVal = $validatedData['name'] ?? $validatedData['judul'];
-        $validatedData['name'] = $nameVal;
-        $validatedData['judul'] = $nameVal;
-        $validatedData['slug'] = Str::slug($nameVal);
+        // Buat slug otomatis dari judul proyek
+        $validatedData['slug'] = Str::slug($validatedData['judul']);
 
-        if (empty($validatedData['kategori'])) {
-            $category = Category::find($validatedData['category_id']);
-            $validatedData['kategori'] = $category?->name ?? 'Umum';
-        }
+        $category = Category::find($validatedData['category_id']);
+        $validatedData['kategori'] = $category?->name ?? 'Umum';
 
+        // Simpan file thumbnail jika ada
         if ($request->hasFile('thumbnail')) {
             $validatedData['thumbnail'] = $request->file('thumbnail')
                 ->store('projects/thumbnails', 'public');
         }
 
+        // Pisahkan data relasi pivot technologies sebelum create
         $technologyIds = $validatedData['technologies'] ?? [];
         unset($validatedData['technologies']);
 
         $project = Project::create($validatedData);
 
+        // Hubungkan relasi Many-to-Many ke tabel pivot
         if (! empty($technologyIds)) {
             $project->technologies()->sync($technologyIds);
         }
@@ -137,7 +111,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail proyek di admin.
      */
     public function show(Project $project): View
     {
@@ -147,7 +121,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan form edit proyek.
      */
     public function edit(Project $project): View
     {
@@ -159,42 +133,19 @@ class ProjectController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data proyek di database.
      */
     public function update(Request $request, Project $project): RedirectResponse
     {
-        if ($request->filled('name') && ! $request->filled('judul')) {
-            $request->merge(['judul' => $request->name]);
-        } elseif ($request->filled('judul') && ! $request->filled('name')) {
-            $request->merge(['name' => $request->judul]);
-        }
-
-        if ($request->filled('description') && ! $request->filled('deskripsi')) {
-            $request->merge(['deskripsi' => $request->description]);
-        } elseif ($request->filled('deskripsi') && ! $request->filled('description')) {
-            $request->merge(['description' => $request->deskripsi]);
-        }
-
-        if ($request->filled('project_url') && ! $request->filled('tautan')) {
-            $request->merge(['tautan' => $request->project_url]);
-        } elseif ($request->filled('tautan') && ! $request->filled('project_url')) {
-            $request->merge(['project_url' => $request->tautan]);
-        }
-
         $validatedData = $request->validate([
-            'name' => 'required|max:255|unique:projects,name,'.$project->id,
-            'judul' => 'nullable|max:255',
+            'judul' => 'required|max:255|unique:projects,judul,'.$project->id,
             'category_id' => 'required|exists:categories,id',
-            'kategori' => 'nullable|string|max:100',
             'short_description' => 'nullable|max:255',
-            'description' => 'nullable|string',
-            'deskripsi' => 'nullable|string',
-            'teknologi' => 'nullable|string|max:255',
+            'deskripsi' => 'required|string',
             'project_date' => 'nullable|date',
             'is_featured' => 'nullable|boolean',
-            'project_url' => 'nullable|url|max:255',
-            'repository_url' => 'nullable|url|max:255',
             'tautan' => 'nullable|url|max:255',
+            'repository_url' => 'nullable|url|max:255',
             'status' => 'required|in:draft,published',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048|dimensions:min_width=400,min_height=300',
             'technologies' => 'nullable|array',
@@ -204,16 +155,13 @@ class ProjectController extends Controller
             'thumbnail.max' => 'Ukuran file thumbnail maksimal 2 MB.',
         ]);
 
-        $nameVal = $validatedData['name'] ?? $validatedData['judul'];
-        $validatedData['name'] = $nameVal;
-        $validatedData['judul'] = $nameVal;
-        $validatedData['slug'] = Str::slug($nameVal);
+        // Perbarui slug otomatis dari judul proyek
+        $validatedData['slug'] = Str::slug($validatedData['judul']);
 
-        if (empty($validatedData['kategori'])) {
-            $category = Category::find($validatedData['category_id']);
-            $validatedData['kategori'] = $category?->name ?? 'Umum';
-        }
+        $category = Category::find($validatedData['category_id']);
+        $validatedData['kategori'] = $category?->name ?? 'Umum';
 
+        // Ganti file thumbnail jika diunggah berkas baru
         if ($request->hasFile('thumbnail')) {
             if ($project->thumbnail && Storage::disk('public')->exists($project->thumbnail)) {
                 Storage::disk('public')->delete($project->thumbnail);
@@ -233,7 +181,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus proyek beserta thumbnail dan galeri fotonya.
      */
     public function destroy(Project $project): RedirectResponse
     {
@@ -250,6 +198,6 @@ class ProjectController extends Controller
         $project->technologies()->detach();
         $project->delete();
 
-        return redirect()->route('post.projects.index')->with('success', 'Project dihapus.');
+        return redirect()->route('post.projects.index')->with('success', 'Project berhasil dihapus.');
     }
 }

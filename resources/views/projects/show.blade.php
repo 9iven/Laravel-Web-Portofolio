@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ($project->name ?: $project->judul) . ' - Detail Proyek')
+@section('title', $project->judul . ' - Detail Proyek')
 
 @section('content')
 <div class="my-6 max-w-4xl mx-auto space-y-6">
@@ -29,14 +29,14 @@
         <!-- Thumbnail Proyek (Pertemuan 10) -->
         @if ($project->thumbnail_url)
             <div>
-                <img src="{{ $project->thumbnail_url }}" alt="{{ $project->name }}"
+                <img src="{{ $project->thumbnail_url }}" alt="{{ $project->judul }}"
                      class="w-full max-h-96 object-cover rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
             </div>
         @endif
 
         <div class="flex justify-between items-start gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white leading-tight">{{ $project->name }}</h1>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white leading-tight">{{ $project->judul }}</h1>
                 @if($project->slug)
                     <span class="text-xs font-mono text-gray-400 dark:text-gray-500">/projects/{{ $project->slug }}</span>
                 @endif
@@ -71,7 +71,7 @@
         <div>
             <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Deskripsi Lengkap</h3>
             <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-line">
-                {{ $project->description ?: $project->deskripsi }}
+                {{ $project->deskripsi }}
             </p>
         </div>
 
@@ -85,18 +85,18 @@
                             {{ $tech->name }}
                         </span>
                     @empty
-                        <span class="text-xs text-gray-500 dark:text-gray-400 font-mono">{{ $project->teknologi }}</span>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 font-mono">{{ $project->teknologi ?? '-' }}</span>
                     @endforelse
                 </div>
             </div>
 
             <!-- Tautan Proyek & Repository -->
             <div class="flex flex-wrap gap-4 pt-2 border-t border-gray-200 dark:border-gray-600/60 text-xs">
-                @if($project->project_url ?: $project->tautan)
+                @if($project->tautan)
                     <div>
                         <span class="font-bold text-gray-600 dark:text-gray-400 block mb-0.5">Tautan Demo / Live:</span>
-                        <a href="{{ $project->project_url ?: $project->tautan }}" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 font-medium">
-                            {{ $project->project_url ?: $project->tautan }} &nearr;
+                        <a href="{{ $project->tautan }}" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 font-medium">
+                            {{ $project->tautan }} &nearr;
                         </a>
                     </div>
                 @endif
@@ -122,7 +122,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     @foreach($project->images as $img)
                         <div class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm flex flex-col justify-between">
-                            <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $img->caption ?: $project->name }}"
+                            <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $img->caption ?: $project->judul }}"
                                  class="w-full h-44 object-cover">
                             @if($img->caption)
                                 <div class="p-2.5 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">

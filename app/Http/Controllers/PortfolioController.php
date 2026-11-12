@@ -11,16 +11,14 @@ use Illuminate\View\View;
 class PortfolioController extends Controller
 {
     /**
-     * Display a listing of public projects with search, filtering, and sorting.
+     * Menampilkan daftar proyek publik dengan pencarian, filter kategori & teknologi, serta pengurutan.
      */
     public function projects(Request $request): View
     {
         $query = Project::with(['category', 'technologies', 'images'])
             ->where('status', 'published')
-            ->when($request->search, fn ($q, $s) => $q->where(fn ($w) => $w->where('name', 'like', "%{$s}%")
-                ->orWhere('judul', 'like', "%{$s}%")
+            ->when($request->search, fn ($q, $s) => $q->where(fn ($w) => $w->where('judul', 'like', "%{$s}%")
                 ->orWhere('short_description', 'like', "%{$s}%")
-                ->orWhere('description', 'like', "%{$s}%")
                 ->orWhere('deskripsi', 'like', "%{$s}%")))
             ->when($request->category, fn ($q, $c) => $q->whereHas('category', fn ($w) => $w->where('slug', $c)))
             ->when($request->technology, fn ($q, $t) => $q->whereHas('technologies', fn ($w) => $w->where('slug', $t)));
@@ -30,10 +28,10 @@ class PortfolioController extends Controller
                 $query->oldest('project_date')->oldest('id');
                 break;
             case 'az':
-                $query->orderBy('name', 'asc');
+                $query->orderBy('judul', 'asc');
                 break;
             case 'za':
-                $query->orderBy('name', 'desc');
+                $query->orderBy('judul', 'desc');
                 break;
             case 'project_date':
                 $query->orderByDesc('project_date')->latest('id');
@@ -50,7 +48,7 @@ class PortfolioController extends Controller
     }
 
     /**
-     * Display the specified public project by slug.
+     * Menampilkan halaman detail proyek publik berdasarkan slug di URL.
      */
     public function show(Project $project): View
     {

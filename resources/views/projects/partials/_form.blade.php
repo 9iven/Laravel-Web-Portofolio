@@ -1,15 +1,15 @@
-{{-- partial form input untuk projects (Pertemuan 10 & 11) --}}
+{{-- Form input untuk data proyek (Bersih & Konsisten) --}}
 <div class="space-y-4">
-    {{-- Nama / Judul Proyek --}}
+    {{-- Judul Proyek --}}
     <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Nama / Judul Proyek <span class="text-rose-500">*</span>
+        <label for="judul" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Judul Proyek <span class="text-rose-500">*</span>
         </label>
-        <input type="text" name="name" id="name" 
-            value="{{ old('name', $project->name ?? $project->judul ?? '') }}" required
+        <input type="text" name="judul" id="judul" 
+            value="{{ old('judul', $project->judul ?? '') }}" required
             placeholder="Contoh: Website Portofolio Mahasiswa"
             class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500">
-        @error('name')
+        @error('judul')
             <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
         @enderror
     </div>
@@ -89,13 +89,13 @@
         </div>
     </div>
 
-    {{-- Pemilihan Teknologi (Checkbox name="technologies[]" - Modul 11 Slide 15) --}}
+    {{-- Pilihan Teknologi (Checkbox Many-to-Many via project_technology) --}}
     <div class="border border-gray-200 dark:border-gray-700 rounded-xl p-4 bg-gray-50/60 dark:bg-gray-800/60 space-y-2">
         <div>
             <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Teknologi yang Digunakan (Relasi Pivot)
+                Teknologi yang Digunakan
             </span>
-            <p class="text-xs text-gray-500 dark:text-gray-400">Pilih satu atau lebih teknologi yang diterapkan pada proyek ini.</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Centang teknologi yang diterapkan pada proyek ini.</p>
         </div>
 
         @php
@@ -124,7 +124,7 @@
         </label>
         <input type="text" name="short_description" id="short_description"
             value="{{ old('short_description', $project->short_description ?? '') }}"
-            placeholder="Ringkasan 1-2 kalimat untuk kartu proyek..."
+            placeholder="Ringkasan 1-2 kalimat untuk ditampilkan di kartu proyek..."
             class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500">
         @error('short_description')
             <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
@@ -133,28 +133,28 @@
 
     {{-- Deskripsi Proyek Lengkap --}}
     <div>
-        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label for="deskripsi" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Deskripsi Proyek Lengkap <span class="text-rose-500">*</span>
         </label>
-        <textarea name="description" id="description" rows="4" required
+        <textarea name="deskripsi" id="deskripsi" rows="4" required
             placeholder="Jelaskan gambaran umum, latar belakang, dan fitur utama proyek..."
-            class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('description', $project->description ?? $project->deskripsi ?? '') }}</textarea>
-        @error('description')
+            class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('deskripsi', $project->deskripsi ?? '') }}</textarea>
+        @error('deskripsi')
             <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
         @enderror
     </div>
 
-    {{-- Tautan Website / Demo & Repositori Source Code --}}
+    {{-- Tautan Live Demo & Repositori GitHub --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-            <label for="project_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label for="tautan" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Tautan Website / Live Demo
             </label>
-            <input type="url" name="project_url" id="project_url" 
-                value="{{ old('project_url', $project->project_url ?? $project->tautan ?? '') }}"
+            <input type="url" name="tautan" id="tautan" 
+                value="{{ old('tautan', $project->tautan ?? '') }}"
                 placeholder="https://contoh-demo.com"
                 class="block w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500">
-            @error('project_url')
+            @error('tautan')
                 <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
