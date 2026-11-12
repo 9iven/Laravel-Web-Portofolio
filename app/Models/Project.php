@@ -14,6 +14,7 @@ class Project extends Model
         'slug',
         'category_id',
         'kategori',
+        'teknologi',
         'short_description',
         'deskripsi',
         'status',
@@ -22,6 +23,11 @@ class Project extends Model
         'tautan',
         'repository_url',
         'thumbnail',
+    ];
+
+    protected $attributes = [
+        'teknologi' => '',
+        'kategori' => 'Umum',
     ];
 
     protected function casts(): array

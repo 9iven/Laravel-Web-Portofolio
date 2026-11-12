@@ -259,6 +259,7 @@ class DatabaseSeeder extends Seeder
 
             $catModel = Category::find($pData['category_id']);
             $pData['kategori'] = $catModel?->name ?? 'Web Development';
+            $pData['teknologi'] = implode(', ', $techs);
 
             $project = Project::updateOrCreate(
                 ['slug' => $pData['slug']],
