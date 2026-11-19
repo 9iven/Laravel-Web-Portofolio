@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Project;
 use App\Models\Skill;
 use App\Models\Technology;
@@ -22,6 +23,8 @@ class DashboardController extends Controller
             'categoriesWithCount' => Category::withCount('projects')->get(),
             'topSkills' => Skill::orderBy('level', 'desc')->take(5)->get(),
             'latestProjects' => Project::with('category')->latest()->take(5)->get(),
+            'totalMessages' => Contact::count(),
+            'unreadMessages' => Contact::where('is_read', false)->count(),
         ]);
     }
 }

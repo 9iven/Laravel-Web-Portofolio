@@ -20,13 +20,15 @@
     </div>
 
     <!-- Stat Cards Utama -->
-    <div class="grid grid-cols-2 lg:grid-cols-6 gap-2">
-        <x-stat-card label="Total Projects" :value="$totalProjects" color="text-blue-600"  />
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
+        <x-stat-card label="Total Projects" :value="$totalProjects" color="text-blue-600" />
         <x-stat-card label="Published" :value="$totalPublished" color="text-emerald-600" />
         <x-stat-card label="Draft" :value="$totalDraft" color="text-amber-600" />
         <x-stat-card label="Categories" :value="$totalCategories" color="text-green-600" />
         <x-stat-card label="Technologies" :value="$totalTechnologies" color="text-purple-600" />
         <x-stat-card label="Skills" :value="$totalSkills" color="text-orange-600" />
+        <x-stat-card label="Messages" :value="$totalMessages" color="text-indigo-600" />
+        <x-stat-card label="Unread" :value="$unreadMessages" color="text-rose-600" />
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
