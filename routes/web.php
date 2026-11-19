@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ContactAdminController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PostController;
@@ -39,6 +41,7 @@ Route::prefix('post')->name('post.')->middleware('auth')->group(function () {
     Route::resource('dashboard', DashboardController::class)->only(['index']);
     Route::resource('projects', ProjectController::class);
     Route::resource('skills', SkillController::class);
+    Route::resource('contacts', ContactAdminController::class)->only(['index', 'show', 'destroy']);
 
     // Rute Gallery Project
     Route::post('projects/{project}/gallery', [ProjectGalleryController::class, 'store'])->name('projects.gallery.store');
@@ -46,5 +49,11 @@ Route::prefix('post')->name('post.')->middleware('auth')->group(function () {
     Route::post('projects/{project}/gallery/{image}/thumbnail', [ProjectGalleryController::class, 'setThumbnail'])->name('projects.gallery.set-thumbnail');
     Route::delete('projects/{project}/gallery/{image}', [ProjectGalleryController::class, 'destroy'])->name('projects.gallery.destroy');
 });
+
+// Rute Publik Form Kontak dengan Rate Limiting (Maks 3 pesan/menit)
+Route::get('/contact', [ContactController::class, 'create'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:contact')
+    ->name('contact.store');
 
 require __DIR__.'/auth.php';
