@@ -27,9 +27,15 @@
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.*')">
                         {{ __('Posts') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact*')">
+                        {{ __('Contact') }}
+                    </x-nav-link>
                     @auth
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('post.contacts.index')" :active="request()->routeIs('post.contacts.*')">
+                            {{ __('Messages') }}
                         </x-nav-link>
                     @endauth
                 </div>
@@ -130,10 +136,16 @@
             <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.*')">
                 {{ __('Posts') }}
             </x-responsive-nav-link>
+            <x-nav-link :href="route('contact')" :active="request()->routeIs('contact*')">
+                {{ __('Contact') }}
+            </x-nav-link>
             @auth
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
+                <x-nav-link :href="route('post.contacts.index')" :active="request()->routeIs('post.contacts.*')">
+                    {{ __('Messages') }}
+                </x-nav-link>
             @endauth
         </div>
 

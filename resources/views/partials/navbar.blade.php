@@ -7,6 +7,7 @@
             <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'font-bold text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white' }} transition-colors">About</a>
             <a href="{{ route('education') }}" class="{{ request()->routeIs('education') ? 'font-bold text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white' }} transition-colors">Education</a>
             <a href="{{ route('projects') }}" class="{{ request()->routeIs('projects*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white' }} transition-colors">Projects</a>
+            <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white' }} transition-colors">Contact</a>
             <a href="{{ route('posts.index') }}" class="{{ request()->routeIs('posts.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white' }} transition-colors">Posts</a>
 
             <!-- Theme Toggle Button (Dark Mode / Light Mode) -->
@@ -36,6 +37,7 @@
 
             @auth
                 <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'font-bold text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white' }} transition-colors">Dashboard</a>
+                <a href="{{ route('post.contacts.index') }}" class="{{ request()->routeIs('post.contacts.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white' }} transition-colors">Messages</a>
                 <span class="text-xs text-gray-500 dark:text-gray-400">({{ auth()->user()->name }})</span>
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
