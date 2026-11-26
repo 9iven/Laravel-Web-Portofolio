@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\ProjectImage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -48,6 +49,8 @@ class ProjectGalleryController extends Controller
             }
         }
 
+        Cache::forget('portfolio.featured');
+
         return back()->with('success', 'Gambar galeri berhasil diunggah.');
     }
 
@@ -76,6 +79,8 @@ class ProjectGalleryController extends Controller
 
         $project->update(['thumbnail' => $image->image]);
 
+        Cache::forget('portfolio.featured');
+
         return back()->with('success', 'Foto galeri berhasil ditetapkan sebagai thumbnail utama proyek.');
     }
 
@@ -91,6 +96,8 @@ class ProjectGalleryController extends Controller
         }
 
         $image->delete();
+
+        Cache::forget('portfolio.featured');
 
         return back()->with('success', 'Gambar galeri berhasil dihapus.');
     }

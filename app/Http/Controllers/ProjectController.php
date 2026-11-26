@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Technology;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -96,6 +97,8 @@ class ProjectController extends Controller
                 ->store('projects/thumbnails', 'public');
         }
 
+        $validatedData['is_featured'] = $request->boolean('is_featured');
+
         // Pisahkan data relasi pivot technologies sebelum create
         $technologyIds = $validatedData['technologies'] ?? [];
         unset($validatedData['technologies']);
@@ -106,6 +109,8 @@ class ProjectController extends Controller
         if (! empty($technologyIds)) {
             $project->technologies()->sync($technologyIds);
         }
+
+        Cache::forget('portfolio.featured');
 
         return redirect()->route('post.projects.index')->with('success', 'Project berhasil ditambahkan.');
     }
@@ -171,11 +176,15 @@ class ProjectController extends Controller
                 ->store('projects/thumbnails', 'public');
         }
 
+        $validatedData['is_featured'] = $request->boolean('is_featured');
+
         $technologyIds = $validatedData['technologies'] ?? [];
         unset($validatedData['technologies']);
 
         $project->update($validatedData);
         $project->technologies()->sync($technologyIds);
+
+        Cache::forget('portfolio.featured');
 
         return redirect()->route('post.projects.index')->with('success', 'Project berhasil diperbarui.');
     }
@@ -197,6 +206,8 @@ class ProjectController extends Controller
 
         $project->technologies()->detach();
         $project->delete();
+
+        Cache::forget('portfolio.featured');
 
         return redirect()->route('post.projects.index')->with('success', 'Project berhasil dihapus.');
     }

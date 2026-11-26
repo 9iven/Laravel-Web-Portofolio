@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Skill;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class SkillController extends Controller
@@ -31,6 +32,8 @@ class SkillController extends Controller
 
         Skill::create($validated);
 
+        Cache::forget('portfolio.skills');
+
         return redirect()->route('post.skills.index')->with('success', 'Skill berhasil ditambahkan.');
     }
 
@@ -54,6 +57,8 @@ class SkillController extends Controller
 
         $skill->update($validated);
 
+        Cache::forget('portfolio.skills');
+
         return redirect()->route('post.skills.index')->with('success', 'Skill berhasil diperbarui.');
     }
 
@@ -63,6 +68,8 @@ class SkillController extends Controller
     public function destroy(Skill $skill): RedirectResponse
     {
         $skill->delete();
+
+        Cache::forget('portfolio.skills');
 
         return redirect()->route('post.skills.index')->with('success', 'Skill berhasil dihapus.');
     }
