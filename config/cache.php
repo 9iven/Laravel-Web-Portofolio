@@ -1,5 +1,15 @@
 <?php
 
+use App\Models\Category;
+use App\Models\Education;
+use App\Models\Experience;
+use App\Models\Project;
+use App\Models\ProjectImage;
+use App\Models\Skill;
+use App\Models\Technology;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 return [
@@ -131,6 +141,19 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    'serializable_classes' => [
+        Illuminate\Database\Eloquent\Collection::class,
+        Collection::class,
+        Illuminate\Support\Carbon::class,
+        Carbon::class,
+        CarbonImmutable::class,
+        Project::class,
+        ProjectImage::class,
+        Category::class,
+        Technology::class,
+        Skill::class,
+        Experience::class,
+        Education::class,
+    ],
 
 ];
