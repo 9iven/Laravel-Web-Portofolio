@@ -276,6 +276,11 @@ class DatabaseSeeder extends Seeder
             $project->technologies()->sync($idsToSync);
         }
 
+        $this->call([
+            ExperienceSeeder::class,
+            EducationSeeder::class,
+        ]);
+
         if (class_exists(PostTableSeeder::class)) {
             $this->call([
                 PostTableSeeder::class,
